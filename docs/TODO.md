@@ -2,8 +2,6 @@
 
 ## v4.8 candidates
 
-- **`reviewer-backend` convention audit.** Surfaced during the reviewer-arch/sql/infra/security walk on `feat/v4.7-candidates`. `reviewer-backend.md` likely shares the structural gaps the four sibling walks fixed: missing `## Not to be confused with`, `## When to use` / `When NOT to use`, `## Critical Rules`, `## Notes`. (Base-resolution already addressed in v4.7.3 via PR #38.) Run `ai-reviewer` once, apply must-fix + structural alignment, `/preflight`. Single-file scope.
-
 - **`release.py` deferred refactors.** Script-reviewer surfaced 13 pre-existing items on `feat/v4.7-candidates`; the cheap ones (atomic push, UTC datetime, `--no-verify` waiver, `MAIN_BRANCH` constant, `cargo metadata` recovery) landed inline. Remaining (refactor-tax, not bugs):
   1. `run()` is 84 lines and 8 responsibilities — split into `_resolve_version()` / `_apply_changes()` / `_finalize()`.
   2. `preview` + `dry_run` are two booleans where a `Mode = {REAL, DRY_RUN, PREVIEW}` enum + argparse mutex group belongs.
