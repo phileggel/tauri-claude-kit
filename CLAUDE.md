@@ -67,11 +67,7 @@ just release -y
 
 ## Git hooks
 
-Hooks in `kit/githooks/` are synced to `.githooks/` in downstream projects and must be activated:
-
-```bash
-git config core.hooksPath .githooks
-```
+Hooks in `kit/githooks/` are synced to `.githooks/` in downstream projects (via `just sync-kit`) and to this repo's `.githooks/` for kit development (via `just mirror-local`). Both sync paths now **auto-activate** the hooks (set `core.hooksPath = .githooks`) if no other hooks path is configured. Opt out with `SYNC_NO_HOOKS=1`.
 
 - **pre-commit**: runs `python3 scripts/check.py --fast` (lint/format only)
 - **commit-msg**: enforces conventional commit format (`type: description`, max 72 chars, no co-author lines, no test results in message)
@@ -117,4 +113,4 @@ These are available in `.claude/` for working on the kit itself. They are **not 
 | skill | `whats-next`   | At session start to triage what to work on next across TODOs, plans, and in-flight git (`/whats-next`) |
 | skill | `create-pr`    | Push the current feature branch and open a GitHub PR (`/create-pr`)                                    |
 
-> `smart-commit`, `whats-next`, and `create-pr` are mirrored from `kit/skills/`, and all hooks from `kit/githooks/` — run `just mirror-local` to sync both after changing sources. Activate hooks once with `git config core.hooksPath .githooks`.
+> `smart-commit`, `whats-next`, and `create-pr` are mirrored from `kit/skills/`, and all hooks from `kit/githooks/` — run `just mirror-local` to sync both after changing sources. Hooks auto-activate on first mirror; opt out with `SYNC_NO_HOOKS=1`.

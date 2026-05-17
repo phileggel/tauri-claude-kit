@@ -39,6 +39,31 @@ mkdir -p "$PROJECT_ROOT/.claude"
 
 _record() { printf '%s\n' "$1" >>"$MANIFEST"; }
 
+# Auto-activate kit hooks: set core.hooksPath = .githooks unless the user has
+# opted out (SYNC_NO_HOOKS=1) or already configured a non-`.githooks` hooks
+# path (e.g. Husky's `.husky/`). Idempotent — runs every sync but only writes
+# the config the first time. Closes gh#25 — fresh clones no longer ship inert
+# hooks waiting for the user to discover `git config core.hooksPath`.
+_maybe_activate_hooks() {
+    if [ -n "${SYNC_NO_HOOKS:-}" ]; then
+        return
+    fi
+    if [ ! -d "$PROJECT_ROOT/.githooks" ]; then
+        return
+    fi
+    local current
+    current=$(git -C "$PROJECT_ROOT" config --get core.hooksPath 2>/dev/null || true)
+    if [ "$current" = ".githooks" ]; then
+        return
+    fi
+    if [ -n "$current" ]; then
+        echo -e "${BLUE}ℹ  core.hooksPath = '$current' (not .githooks) — leaving as-is; set SYNC_NO_HOOKS=1 to silence or unset core.hooksPath to let the kit manage it.${NC}"
+        return
+    fi
+    git -C "$PROJECT_ROOT" config core.hooksPath .githooks
+    echo -e "${GREEN}✅ Activated kit hooks (set core.hooksPath = .githooks)${NC}"
+}
+
 # ── Framework detection ───────────────────────────────────────────────────────
 # Downstream projects declare their target framework in .claude/kit.config.json
 # ({"framework": "react"|"svelte"}). The file is auto-created with the React
@@ -343,6 +368,8 @@ sort -u -o "$MANIFEST" "$MANIFEST"
 
 # Remove legacy version file — superseded by .claude/kit-version.md
 rm -f "$PROJECT_ROOT/.claude-kit-version"
+
+_maybe_activate_hooks
 
 echo -e "${GREEN}✅ Synced claude-kit@${VERSION}${NC}"
 echo -e "${BLUE}→ Review changes before committing (git diff).${NC}"

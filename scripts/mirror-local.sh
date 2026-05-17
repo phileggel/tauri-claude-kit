@@ -50,10 +50,21 @@ while IFS=$'\t' read -r src dst mode; do
     echo "✅ $src → $dst"
 done <<<"$MIRROR_TABLE"
 
-# Remind user to activate hooks if not already done
+# Auto-activate kit hooks if not active. Idempotent. Skip on opt-out
+# (SYNC_NO_HOOKS=1) or when the project already configured a non-.githooks
+# hook path (e.g. Husky). Mirrors the behavior of kit/scripts/sync.sh
+# `_maybe_activate_hooks` so kit-maintainer and downstream get identical
+# semantics — see gh#25.
 HOOKS_PATH="$(git -C "$PROJECT_ROOT" config core.hooksPath 2>/dev/null || true)"
-if [ "$HOOKS_PATH" != ".githooks" ]; then
+if [ -n "${SYNC_NO_HOOKS:-}" ]; then
+    :
+elif [ "$HOOKS_PATH" = ".githooks" ]; then
+    :
+elif [ -n "$HOOKS_PATH" ]; then
     echo ""
-    echo "⚠  Hooks not yet active. Run once:"
-    echo "   git config core.hooksPath .githooks"
+    echo "ℹ  core.hooksPath = '$HOOKS_PATH' (not .githooks) — leaving as-is."
+else
+    git -C "$PROJECT_ROOT" config core.hooksPath .githooks
+    echo ""
+    echo "✅ Activated kit hooks (set core.hooksPath = .githooks)"
 fi

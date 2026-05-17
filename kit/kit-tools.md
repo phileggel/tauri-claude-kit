@@ -121,7 +121,7 @@ Not a workflow tool — run only after syncing a new kit version to realign `CLA
 | `pre-push`         | `git push`   | Runs `python3 scripts/check.py` (full suite: tests + build + lint); blocks push on failure                         |
 | `pre-merge-commit` | `git merge`  | Blocks non-fast-forward merge commits to enforce linear history; does not affect `--ff-only` or `--squash`         |
 
-Activate with: `git config core.hooksPath .githooks`
+Activation is automatic — `just sync-kit` sets `core.hooksPath = .githooks` on first sync (idempotent on subsequent syncs). To opt out, pre-set `core.hooksPath` to another value (e.g. for Husky) or run `SYNC_NO_HOOKS=1 just sync-kit`.
 
 ---
 
