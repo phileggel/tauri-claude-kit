@@ -45,10 +45,9 @@ _record() { printf '%s\n' "$1" >>"$MANIFEST"; }
 # the config the first time. Closes gh#25 — fresh clones no longer ship inert
 # hooks waiting for the user to discover `git config core.hooksPath`.
 _maybe_activate_hooks() {
-    if [ -n "${SYNC_NO_HOOKS:-}" ]; then
-        return
-    fi
-    if [ ! -d "$PROJECT_ROOT/.githooks" ]; then
+    # Opt-out is explicit (=1), not "any non-empty value" — matches the docs
+    # and avoids surprising SYNC_NO_HOOKS=0/false users.
+    if [ "${SYNC_NO_HOOKS:-0}" = "1" ]; then
         return
     fi
     local current
@@ -57,7 +56,7 @@ _maybe_activate_hooks() {
         return
     fi
     if [ -n "$current" ]; then
-        echo -e "${BLUE}ℹ  core.hooksPath = '$current' (not .githooks) — leaving as-is; set SYNC_NO_HOOKS=1 to silence or unset core.hooksPath to let the kit manage it.${NC}"
+        echo -e "${BLUE}ℹ core.hooksPath = '$current' (not .githooks) — leaving as-is; set SYNC_NO_HOOKS=1 to silence or unset core.hooksPath to let the kit manage it.${NC}"
         return
     fi
     git -C "$PROJECT_ROOT" config core.hooksPath .githooks

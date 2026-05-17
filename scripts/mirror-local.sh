@@ -56,13 +56,15 @@ done <<<"$MIRROR_TABLE"
 # `_maybe_activate_hooks` so kit-maintainer and downstream get identical
 # semantics — see gh#25.
 HOOKS_PATH="$(git -C "$PROJECT_ROOT" config core.hooksPath 2>/dev/null || true)"
-if [ -n "${SYNC_NO_HOOKS:-}" ]; then
+# Opt-out is explicit (=1), not "any non-empty value" — matches the docs
+# and avoids surprising SYNC_NO_HOOKS=0/false users.
+if [ "${SYNC_NO_HOOKS:-0}" = "1" ]; then
     :
 elif [ "$HOOKS_PATH" = ".githooks" ]; then
     :
 elif [ -n "$HOOKS_PATH" ]; then
     echo ""
-    echo "ℹ  core.hooksPath = '$HOOKS_PATH' (not .githooks) — leaving as-is."
+    echo "ℹ core.hooksPath = '$HOOKS_PATH' (not .githooks) — leaving as-is."
 else
     git -C "$PROJECT_ROOT" config core.hooksPath .githooks
     echo ""
