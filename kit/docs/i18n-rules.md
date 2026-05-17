@@ -4,7 +4,7 @@ Defines translation file structure, what must and must not be translated, and ke
 
 ## Translation file structure
 
-Translation files live in `src/i18n/locales/{locale}/`. Each locale directory contains JSON files organized by domain (e.g. `common.json`, `auth.json`). Locale names are discovered at review time — do not hardcode them.
+Translation files live in `src/infra/i18n/locales/{locale}/` (the i18n runtime adapter lives under the `infra/` bucket per F0). Each locale directory contains JSON files organized by domain (e.g. `common.json`, `auth.json`). Locale names are discovered at review time — do not hardcode them.
 
 ## What must be translated
 

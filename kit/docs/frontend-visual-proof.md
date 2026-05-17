@@ -40,8 +40,8 @@ downstream project and never overridden by the kit:
 {
   "vite_preview_port": 1422,
   "vite_preview_host": "127.0.0.1",
-  "global_css_import": "src/index.css",
-  "i18n_import": "src/i18n/i18n.ts"
+  "global_css_import": "src/styles/index.css",
+  "i18n_import": "src/infra/i18n/index.ts"
 }
 ```
 
@@ -83,8 +83,8 @@ Import the real i18n initializer and global CSS using paths relative to `src/__p
 the leading `src/`, prefix with `../`):
 
 ```tsx
-import "../index.css"; // {global_css_import} with src/ → ../
-import { setupI18n } from "../i18n/i18n"; // {i18n_import} with src/ → ../
+import "../styles/index.css"; // {global_css_import} with src/ → ../
+import { setupI18n } from "../infra/i18n"; // {i18n_import} with src/ → ../
 import { MyComponent } from "../features/domain/MyComponent";
 
 setupI18n();
