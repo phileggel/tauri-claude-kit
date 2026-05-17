@@ -75,6 +75,36 @@ Baseline: `+4.7.3`. New baseline: `+4.7.4`. Cherry-picked one main commit (`0f3a
 
 ---
 
+## svelte-v0.3.0+4.8.0 → svelte-v0.4.0+4.9.0
+
+Baseline: `+4.8.0`. New baseline: `+4.9.0`. Cherry-picked the single squash commit `bd45f68` (PR #43) — v4.9 docs alignment.
+
+### Conflicts resolved during cherry-pick
+
+(None — clean cherry-pick.)
+
+### Mirrored to `-svelte` variant
+
+- `kit/docs/frontend-rules.md` @ bd45f68 — full F0 introduction + F28 restructure mirrored to `frontend-rules-svelte.md`: F0 tree adapted to Svelte (`.svelte` components, `.svelte.ts` reactive modules, `snackbarStore.svelte.ts`, `ui/modules/` instead of `ui/hooks/`, `Router.svelte`, `main.ts` Svelte 5 entry, `infra/i18n/`). F1 trimmed to one-sentence cite of F0. F24↔E4 reverse cross-link + F18→visual-proof reference added. Banner dropped.
+- `kit/docs/e2e-rules.md` @ bd45f68 — banner dropped, `docs/` prefix removed from peer-file refs, E4↔F24 reverse cross-link added to `e2e-rules-svelte.md`. Verbatim mirror.
+- `kit/docs/test_convention.md` @ bd45f68 — snackbar mock path moved from `@/infra/snackbar` to `@/ui/components/snackbar/snackbarStore.svelte` (matching the Svelte F0 widget colocation). Tier 4 row + body section added pointing at `e2e-rules-svelte.md` (B36 ephemeral DB).
+- `kit/docs/frontend-visual-proof.md` @ bd45f68 — banner dropped (replaced with F18 reverse-link callout), config defaults + example imports updated to F0 paths (`src/styles/index.css`, `src/infra/i18n/index.ts`, `import { setupI18n } from "../infra/i18n"`).
+- `kit/agents/reviewer-frontend.md` @ bd45f68 — single F28→F0 citation fix mirrored to `reviewer-frontend-svelte.md` ("F0 layout uses `src/ui/modules/`" — the Svelte path).
+- `kit/agents/test-writer-frontend.md` @ bd45f68 — 4 F28→F0 citations mirrored to `test-writer-frontend-svelte.md` (read-list gloss, "anywhere in src/" placement, vitest target prose, colocation rule).
+
+### Skipped (no fork — change flows through cherry-pick as-is)
+
+- `kit/docs/backend-rules.md`, `kit/docs/ddd-reference.md`, `kit/docs/error-model.md`, `kit/docs/i18n-rules.md` — backend/neutral layering and convention. No fork.
+- `kit/skills/visual-proof/SKILL.md` — i18n glob + config defaults updated to F0 paths. Skill body is framework-neutral (works for both React and Svelte projects via the per-project config).
+- `scripts/branch.sh` (NEW), `scripts/mirror-local.sh` — kit-internal infra. Shared.
+- `.claude/agents/doc-reviewer.md` — new Category F (40-char table cell). Kit-internal reviewer. Shared.
+
+### Custom (flagged for manual treatment)
+
+(None this cycle — all mirrors clean.)
+
+---
+
 ## svelte-v0.2.1+4.7.4 → svelte-v0.3.0+4.8.0
 
 Baseline: `+4.7.4`. New baseline: `+4.8.0`. Cherry-picked the single squash commit `c3a695d` (PR #42) — closes GH #15, #22, #23, #25, #27, #28, #29, #32, #35, #41.

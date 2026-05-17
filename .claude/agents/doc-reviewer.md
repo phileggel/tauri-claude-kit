@@ -95,6 +95,14 @@ Read the rule's content and the section heading that hosts it. Flag only **obvio
 
 Do not flag non-sequential numbering. Numbers are stable IDs; the position is a reading affordance — a rule's neighbors are its thematic siblings, not its numerical predecessors.
 
+#### F — Table cell width
+
+For each Markdown table in the file under review, count raw-source characters per cell (the text between two `|` pipes, trimmed of surrounding spaces). Markdown link syntax `[text](target)` counts as written, not as rendered length.
+
+- 🟡 Any table cell exceeds 40 characters. The author should truncate with `…`, split into multiple rows, or convert the table to a bulleted list / prose. Wide cells wrap awkwardly in PR diffs, force horizontal scroll in narrow terminals, and erase the at-a-glance value of the table.
+
+List each violation as `{path}:{line} — cell "{first 30 chars}…" is N chars`. Cluster repeat offenders in the same table under one finding when the issue is the same shape (e.g. "all `Where` cells in this table exceed 40 chars").
+
 ### Step 3 — Output
 
 Use `## Output format` below. Lead with a one-line verdict. Skip categories with no findings (write `✅ None.`).
@@ -124,6 +132,10 @@ Use `## Output format` below. Lead with a one-line verdict. Skip categories with
 
 ### E — Thematic positioning
 🟡 frontend-rules.md:142 — F26 (cross-feature imports) under section "Component" — expected section "Cross-feature imports" or similar
+
+### F — Table cell width
+🟡 test_convention.md:8 — cell "inline `#[cfg(test)] mod tests` in t…" is 53 chars
+🟡 error-model.md:199 — `Where` column: 3 cells over 40 chars (all reference paths)
 ```
 
 End with:

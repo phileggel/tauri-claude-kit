@@ -41,3 +41,6 @@ Thumbs.db
 
 # Ephemeral skill reports (whats-next, reviewers, etc.)
 tmp/
+
+# Claude Code harness state
+.claude/scheduled_tasks.lock

@@ -274,7 +274,7 @@ Pre-existing issues on unchanged lines go in a separate section per file — no 
 ```
 ### ℹ️ Pre-existing tech debt (not introduced by this branch)
 - Line 12: `aria-label="Save"` literal string
-- Line 27: `src/modules/fuzzy.svelte.ts` referenced — F28 layout uses `src/ui/modules/`
+- Line 27: `src/modules/fuzzy.svelte.ts` referenced — F0 layout uses `src/ui/modules/`
 
 > Add to `docs/todo.md` if not already tracked.
 ```

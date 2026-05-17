@@ -28,6 +28,7 @@ kit/githooks/commit-msg	.githooks/commit-msg	+x
 kit/githooks/pre-commit	.githooks/pre-commit	+x
 kit/githooks/pre-merge-commit	.githooks/pre-merge-commit	+x
 kit/githooks/pre-push	.githooks/pre-push	+x
+kit/scripts/branch.sh	scripts/branch.sh	+x
 kit/scripts/branch-files.sh	scripts/branch-files.sh	+x
 kit/scripts/changed-files.sh	scripts/changed-files.sh	+x
 kit/scripts/report-path.sh	scripts/report-path.sh	+x
