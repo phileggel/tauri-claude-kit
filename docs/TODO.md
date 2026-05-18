@@ -1,8 +1,6 @@
 # List of TODOs
 
-## v4.8 candidates
-
-## v4.9 candidates
+## Candidates
 
 - **SDD Workflow B walk — verify reviewer dual-use.** Reviewer agents (`reviewer-arch`, `reviewer-backend`, `reviewer-frontend`, `reviewer-e2e`, `reviewer-sql`, `reviewer-infra`, `reviewer-security`) are used by both Workflow A (Phase 4) and Workflow B (step 5). Workflow B has no `docs/plan/{feature}-plan.md`, no `docs/contracts/{domain}-contract.md`, no `docs/spec/{domain}.md`. Verify each reviewer handles the no-plan / no-contract context gracefully (no hard reads, no halts on absent files). Likely surface mostly verification with small graceful-skip patches.
 
@@ -25,8 +23,6 @@
   Closes GH #15 + #27 as side-effects. Categorisation per fix item: graceful-skip / doc-gate / sync-time-exclude / accept-as-noise / strict-required.
 
 - **Collapse `branch-files.sh` + `changed-files.sh` into `branch.sh files` subcommand.** v4.7.3 introduced `branch.sh {base|diff|log}` to absorb compound shell from reviewer prompts (issue #37). `branch-files.sh` and `changed-files.sh` differ by exactly one line (whether the committed branch diff is included) — natural candidates to fold in as `branch.sh files` and `branch.sh files --uncommitted-only`. Net −2 scripts. Breaking change for downstream callers (agents naming the scripts directly) — handle as a coordinated rename + sync cycle, not piecemeal.
-
-- **`check.py` emoji column width.** `_pad_visible` pads by Python `len()` which counts ⏩/✅/❌ as 1 char but terminals render them as 2 columns; the table is off by 1 column on emoji rows. Either depend on `wcwidth` or hardcode emoji width compensation. Split from the v4.8 `check.py` polish entry — fiddlier than the other items.
 
 - **v4.8 review-cycle deferred polish.** Surfaced by the global ai-reviewer + script-reviewer pass on `feat/v4.8-candidates`; triaged as should-fix or consider, not blocking release:
   - **spec-reviewer wording** — Category B leak-list: `response` too broad (split to `request body` / `response body`); C wire-shape: "command responses" leaks vocab (rephrase to "observable to the user"); G demoted 🟡 trailing sentence duplicates Critical Rule 6 (trim).
