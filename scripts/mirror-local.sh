@@ -24,6 +24,7 @@ MIRROR_TABLE=$(
 kit/skills/smart-commit/SKILL.md	.claude/skills/smart-commit/SKILL.md
 kit/skills/whats-next/SKILL.md	.claude/skills/whats-next/SKILL.md
 kit/skills/create-pr/SKILL.md	.claude/skills/create-pr/SKILL.md
+kit/skills/review-triage/SKILL.md	.claude/skills/review-triage/SKILL.md
 kit/githooks/commit-msg	.githooks/commit-msg	+x
 kit/githooks/pre-commit	.githooks/pre-commit	+x
 kit/githooks/pre-merge-commit	.githooks/pre-merge-commit	+x

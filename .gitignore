@@ -42,5 +42,8 @@ Thumbs.db
 # Ephemeral skill reports (whats-next, reviewers, etc.)
 tmp/
 
+# Reviewer reports (local triage artifacts, consumed by /review-triage)
+.review/
+
 # Claude Code harness state
 .claude/scheduled_tasks.lock
