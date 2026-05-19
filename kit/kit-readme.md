@@ -157,6 +157,19 @@ If you need to extend a kit agent's behaviour:
 2. Add project-context or domain-specific validation.
 3. Document it in your project's local `.claude/` directory.
 
+### Reviewer reports — `.review/` convention
+
+The kit's reviewer-\* agents save their full output to `.review/{slug}-{date}-{NN}.md` via `bash scripts/review-path.sh {slug}` before emitting their terminal message. The `/review-triage` skill then reads these files to triage findings against the (a)/(b)/(c) per-task discipline before any are applied.
+
+**Add `.review/` to your project's `.gitignore`** — reviewer reports are local triage artifacts, not deliverables. Suggested entry:
+
+```
+# Reviewer reports (local triage artifacts, consumed by /review-triage)
+.review/
+```
+
+`.review/` is created automatically the first time any reviewer runs; the folder name is fixed (the scripts hard-code the path so the skill can find them). If you need to wipe accumulated reports, `rm -rf .review/` is safe — the next reviewer run rebuilds the directory.
+
 ### Authoring rule — no compound shell in agent / skill prompts
 
 Bash blocks inside agents (`kit/agents/*.md`) and skills (`kit/skills/*/SKILL.md`) **must not** contain compound shell. Specifically, the following patterns are rejected by `scripts/check.py`'s `No compound shell in prompts` rule:
