@@ -205,11 +205,14 @@ Do not append per-file `✅ No issues found.` stanzas; the file count in the hea
 
 Before sending your terminal message:
 
-1. Compute `REPORT_PATH` via `bash scripts/review-path.sh reviewer-e2e` (the script creates `.review/` if missing).
-2. Invoke the `Write` tool with `file_path=REPORT_PATH` and `content=<full formatted output per ## Output format>`. Do NOT use `Bash` heredoc or `tee` — the `Write` constraint in Critical Rule 1 keeps the audit trail tight.
-3. Your terminal message is the SAME full output (the file is a durable copy, not a substitute), followed by one of:
-   - On success: `Full report saved to {REPORT_PATH}. Main agent: run /review-triage before applying any finding.`
+1. Compute the report path via `bash scripts/review-path.sh reviewer-e2e` (the script creates `.review/` if missing). Call the printed path `REPORT_PATH` for the next steps.
+2. Invoke the `Write` tool with `file_path=<REPORT_PATH from Step 1>` and `content=<full formatted output per ## Output format>`. Prefer `Write` over `Bash` heredoc — the `Write` constraint in Critical Rule 1 keeps the audit trail tight. Fall back to `Bash` heredoc only when `Write` is unavailable in your tool grant (e.g. main-agent inline execution); in that case append `(saved via Bash fallback)` to the handoff line in Step 3.
+3. Your terminal message is the SAME full output (the file persists across the sub-agent → main-agent boundary, not a substitute), followed by one of:
+   - With findings: `Full report saved to {REPORT_PATH}. Main agent: run /review-triage before applying any finding.`
+   - Clean (no findings): `All clean — no findings. Full report saved to {REPORT_PATH}; no triage needed.`
    - On Write failure: `⚠️ Could not persist report to {REPORT_PATH} ({error}). Full output is in this terminal message only — main agent: run /review-triage against the terminal text.`
+
+Skip Save report entirely if the input gate rejected the request (e.g. file outside this reviewer's scope) — the rejection message is the full output.
 
 The main agent only sees your terminal message; the file ensures `/review-triage` has the complete report when triaging findings against the (a)/(b)/(c) discipline. The `.review/` folder is gitignored downstream.
 

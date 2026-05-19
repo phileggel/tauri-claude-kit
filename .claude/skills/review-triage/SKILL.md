@@ -62,16 +62,16 @@ For each finding, answer these four questions in order. The answers DETERMINE th
 
 **Q2: If pre-existing, is it boyscout-eligible?** All three must hold:
 
-- Inside the touched file set (file appears in branch diff at all)
+- Inside the PR scope (file appears in `git diff {base}..HEAD` — the cumulative branch diff against the PR's base, NOT a single commit's diff; see "Scope is PR, not commit" in Notes)
 - Small (≤~10 LOC of fix diff — measured as the lines this fix would add+delete, not the blast radius)
 - Mechanical (rename, import update, signature swap — no fresh design judgment)
 - All yes → **(a)**.
 - Any no → **(b)**.
 
-**Q3: Does it require design judgment or multi-file fanout?**
+**Q3: Does it require design judgment, OR multi-file fanout outside the PR scope?**
 
 - Yes → **(b)**.
-- No → continue to Q4.
+- No → continue to Q4. **Note**: multi-file fanout INSIDE the PR scope is still (a) if mechanical — the PR is the natural fold boundary. Splitting "fix the wording" from "ship the wording" inside the same PR produces churn without value.
 
 **Q4: Is the finding empirically wrong, scope-creep, YAGNI, or stylistic-without-rule-basis?**
 
@@ -191,6 +191,8 @@ When the batch is clean, the saved report is one line: `## review-triage — {da
 ---
 
 ## Notes
+
+**Scope is PR, not commit.** The (a)/(b)/(c) decision treats the PR (cumulative diff against the PR's base branch) as the scope unit. A wording fix that fans across 10 files all touched by the same PR is (a) if mechanical — fold it into the PR, don't defer. The boyscout test in Q2 and the fanout test in Q3 both use PR scope. Per-commit framing would create artificial splits ("fix the wording" vs "ship the wording" as separate PRs) that produce churn without value.
 
 The (a)/(b)/(c) discipline this skill encodes is per-task rule 5 in the downstream project's CLAUDE.md (§ Per-task Discipline). The skill is self-contained — it works in projects whose CLAUDE.md doesn't carry the rule, because the grading axes live in Step 3 above.
 
