@@ -104,6 +104,7 @@ Pick the template matching the chosen workflow. Replace `{task}` with the user's
 - [ ] Implement backend (make tests green)
 - [ ] `just format`
 - [ ] `reviewer-backend` → fix issues
+- [ ] `reviewer-arch` _(if any `.rs` file modified — layer-local pass)_ → fix issues
 - [ ] `just generate-types` → updates `src/bindings.ts`
 - [ ] Fix TS compilation errors from new bindings only — no UI work
 - [ ] `just check` — TypeScript clean
@@ -124,8 +125,12 @@ Pick the template matching the chosen workflow. Replace `{task}` with the user's
 - [ ] Run `npm run test:e2e` → green confirmed (main agent triages any failure)
 - [ ] `reviewer-e2e` _(reviews E2E test files)_
 - [ ] `/smart-commit`: E2E layer [HARD GATE]
-- [ ] `reviewer-arch` (always) + `reviewer-sql` (if migrations) + `reviewer-infra` (if any config, script, hook, or workflow file changed) + `reviewer-security` _(if Tauri command, capability, or security-sensitive file modified)_
-- [ ] Update `ARCHITECTURE.md` + `docs/todo.md`
+- [ ] `reviewer-arch` _(if any `.rs` file modified in this branch — whole-feature recap over the cumulative diff; skip on docs-only or E2E-only Phase 4 PRs)_
+- [ ] `reviewer-sql` _(if migrations)_
+- [ ] `reviewer-infra` _(if any config, script, hook, or workflow file changed)_
+- [ ] `reviewer-security` _(if Tauri command, capability, or security-sensitive file modified)_
+- [ ] Update `docs/todo.md` (always — close shipped entries, surface follow-ups)
+- [ ] Update `ARCHITECTURE.md` _(only if a new module/path, new layer pattern, or new cross-layer abstraction was introduced; skip when adding functions to existing modules or endpoints following the existing pattern)_
 - [ ] `spec-checker` → all rules and contract commands covered
 - [ ] `/smart-commit`: tests & docs [HARD GATE]
 - [ ] `/create-pr` → final PR per the **PR Plan** (or merge directly: `git checkout main && git merge --no-ff feat/{name}`)
@@ -153,8 +158,12 @@ Pick the template matching the chosen workflow. Replace `{task}` with the user's
 - [ ] `just check` (or `just check-full` if tests needed)
 - [ ] `reviewer-backend` → if any `.rs` modified
 - [ ] `reviewer-frontend` → if any `.ts`/`.tsx` modified
-- [ ] `reviewer-arch` (always) + `reviewer-sql` (if migrations) + `reviewer-infra` (if scripts, hooks, config, or workflow files changed) + `reviewer-security` _(if Tauri command, capability, or security-sensitive file modified)_
-- [ ] Update `ARCHITECTURE.md` + `docs/todo.md` if behavior or module layout changed
+- [ ] `reviewer-arch` _(if any `.rs` file modified — skip on docs-only or config-only fixes)_
+- [ ] `reviewer-sql` _(if migrations)_
+- [ ] `reviewer-infra` _(if scripts, hooks, config, or workflow files changed)_
+- [ ] `reviewer-security` _(if Tauri command, capability, or security-sensitive file modified)_
+- [ ] Update `docs/todo.md` _(if a TODO entry was resolved)_
+- [ ] Update `ARCHITECTURE.md` _(only if a new module/path, new layer pattern, or new cross-layer abstraction was introduced)_
 - [ ] Ask user if another task is needed
 - [ ] `/smart-commit` [HARD GATE]
 - [ ] `/create-pr` → push branch and open PR (or merge directly: `git checkout main && git merge --no-ff fix/{name}`)
