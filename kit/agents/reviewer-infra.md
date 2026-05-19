@@ -1,7 +1,7 @@
 ---
 name: reviewer-infra
 description: Infrastructure and CI reviewer for Tauri 2 / Rust projects. Reviews GitHub Actions workflows, config files (tauri.conf.json, capabilities/*.json, Cargo.toml, package.json, justfile), scripts, and git hooks. Checks CI/local consistency, script quality, capability file format. Delegates dependency audit to /dep-audit before releases. Use when any workflow, config, capability, script, or hook file is modified, or before cutting a release. Not for general `.rs` / `.ts` / `.tsx` code quality (use `reviewer-backend` / `reviewer-frontend`), DDD layering (`reviewer-arch`), migrations (`reviewer-sql`), or application-code security (`reviewer-security`). Default diff-scoped; opt-in release-sweep mode (full infra audit + CI Improvement Opportunities) when the invoking prompt contains `release-sweep`.
-tools: Read, Glob, Bash
+tools: Read, Glob, Bash, Write
 model: sonnet
 ---
 
@@ -446,9 +446,23 @@ Do not append per-file `✅ No issues found.` stanzas; the file count in the hea
 
 ---
 
+## Save report
+
+Before sending your terminal message:
+
+1. Compute `REPORT_PATH` via `bash scripts/review-path.sh reviewer-infra` (the script creates `.review/` if missing).
+2. Invoke the `Write` tool with `file_path=REPORT_PATH` and `content=<full formatted output per ## Output format>`. Do NOT use `Bash` heredoc or `tee` — the `Write` constraint in Critical Rule 1 keeps the audit trail tight.
+3. Your terminal message is the SAME full output (the file is a durable copy, not a substitute), followed by one of:
+   - On success: `Full report saved to {REPORT_PATH}. Main agent: run /review-triage before applying any finding.`
+   - On Write failure: `⚠️ Could not persist report to {REPORT_PATH} ({error}). Full output is in this terminal message only — main agent: run /review-triage against the terminal text.`
+
+The main agent only sees your terminal message; the file ensures `/review-triage` has the complete report when triaging findings against the (a)/(b)/(c) discipline. The `.review/` folder is gitignored downstream.
+
+---
+
 ## Critical Rules
 
-1. **Read-only — never edit infrastructure.** This agent has no `Edit` or `Write` tool grant; report findings only.
+1. **Read-only on reviewed files.** The `Write` grant is reserved for the `.review/` report path per `## Save report` — never `Write` to any other path (workflows, configs, scripts, hooks, source files, or docs including `docs/todo.md`). Pre-existing tech-debt notes are reported in the output for the main agent to file, not written here.
 2. **Severity labels apply only to changed lines.** Issues on unchanged lines go under `Pre-existing tech debt` without severity labels — pre-existing issues do not block the branch.
 3. **Doc reads are best-effort.** Never halt on absent `docs/backend-rules.md`, plan, or contract files. Workflow B (no plan / no contract) must remain reachable.
 4. **One pass across all files.** Do not request a follow-up turn to finish.
