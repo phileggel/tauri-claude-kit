@@ -28,16 +28,16 @@ case "${1:-}" in
 "") ;;
 --rust) FILTER='\.rs$' ;;
 --frontend)
-    FILTER='\.(ts|tsx)$'
+    FILTER='\.(ts|svelte)$'
     EXCLUDE='^e2e/'
     ;;
 --arch)
-    FILTER='\.(rs|ts|tsx)$'
+    FILTER='\.(rs|ts|svelte)$'
     EXCLUDE='^e2e/'
     ;;
 --e2e) FILTER='^e2e/.*\.test\.ts$' ;;
 --migrations) FILTER='^migrations/' ;;
---security) FILTER='\.(rs|ts|tsx)$|capabilities/.*\.json$' ;;
+--security) FILTER='\.(rs|ts|svelte)$|capabilities/.*\.json$' ;;
 *)
     echo "usage: bash scripts/branch-files.sh [--rust|--frontend|--arch|--e2e|--migrations|--security]" >&2
     exit 2

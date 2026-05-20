@@ -46,7 +46,7 @@ def _project_root() -> Path:
 
 ROOT = _project_root()
 SOURCE_DIRS = ["src", "src-tauri/src"]
-SOURCE_EXTS = (".ts", ".tsx", ".rs")
+SOURCE_EXTS = (".ts", ".tsx", ".svelte", ".rs")
 
 
 def _read(path: Path) -> str | None:
